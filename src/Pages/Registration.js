@@ -1,6 +1,68 @@
-import React from 'react'
+import axios from "axios";
+import { useState } from "react"
+import React  from 'react'
+
+
 
 function Registration() {
+
+
+    const [formData, setFormData] = useState({
+        name:'',
+        gender:'',
+        email:'',
+        mobileNo:'',
+        nic:'',
+        address:'',
+        password:'',
+        confirmPassword:''
+    });
+    
+    const [error, setError] = useState('');
+    
+    const handleChange = (e) => {
+        setFormData({...formData,[e.target.name]:e.target.value});
+    }
+    
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+    
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match');
+            console.log('Password do not match');
+            console.log(formData.confirmPassword);
+            console.log(formData.password);
+            return;
+          }
+      
+          setError('');
+    
+        const userDTO = {
+            name: formData.name,
+            userRole: 'Customer',
+            email : formData.email,
+            password: formData.password
+        };
+    
+        const customerDTO ={
+            nic:formData.nic,
+            mobileNo: formData.mobileNo,
+            gender : formData.gender,
+            address: formData.address
+        }
+    
+        const data = {
+            userDTO,
+            customerDTO
+        }
+    
+        try{
+            const response = await axios.post('http://localhost:8080/Cafe/addCustomer', data);
+            console.log(response.data);
+        } catch(error){
+            console.error('There was an error', error);
+        }
+    }
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -15,7 +77,7 @@ function Registration() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" action="#" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="User Name" className="block text-sm font-medium leading-6 text-gray-900">
                 User Name
@@ -25,7 +87,8 @@ function Registration() {
                   id="name"
                   name="name"
                   type="text"
-                  
+                  value={formData.name}
+                  onChange={handleChange}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -40,13 +103,14 @@ function Registration() {
                 <select
                   id="gender"
                   name="gender"
-                  type="text"
+                  value={formData.gender}
+                  onChange={handleChange}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 >
-                    <option>Select Your Gender</option>
-                    <option>Male</option>
-                    <option>Female</option>
+                    <option value=''>Select Your Gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
                 </select>
 
               </div>
@@ -61,6 +125,8 @@ function Registration() {
                   id="email"
                   name="email"
                   type="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   autoComplete="email"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -77,6 +143,8 @@ function Registration() {
                   id="mobileNo"
                   name="mobileNo"
                   type="mobile"
+                  value={formData.mobileNo}
+                  onChange={handleChange}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -91,7 +159,9 @@ function Registration() {
                 <input
                   id="nic"
                   name="nic"
-                  type="nic"
+                  type="text"
+                  value={formData.nic}
+                  onChange={handleChange}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -104,10 +174,11 @@ function Registration() {
               </label>
               <div className="mt-2">
                 <textarea
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                  id="address"
+                  name="address"
+                  type="address"
+                  value={formData.address}
+                  onChange={handleChange}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -125,7 +196,8 @@ function Registration() {
                   id="password"
                   name="password"
                   type="password"
-                  autoComplete="current-password"
+                  value={formData.password}
+                  onChange={handleChange}
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -140,10 +212,12 @@ function Registration() {
               </div>
               <div className="mt-2">
                 <input
-                  id="password"
-                  name="password"
+                  id="confirmPassword"
+                  name="confirmPassword"
                   type="password"
-                  autoComplete="current-password"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  autoComplete="confirm-password"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -158,13 +232,6 @@ function Registration() {
               </button>
             </div>
           </form>
-
-          <p className="mt-10 text-center text-sm text-gray-500">
-            Not a member?{' '}
-            <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-              Start a 14 day free trial
-            </a>
-          </p>
         </div>
       </div>
   )
