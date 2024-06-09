@@ -17,15 +17,15 @@ function Registration() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" action="#" method="POST">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="User Name" className="block text-sm font-medium leading-6 text-gray-900">
                 User Name
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                  id="name"
+                  name="name"
+                  type="text"
+                  
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -33,18 +33,22 @@ function Registration() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                
+              <label htmlFor="Gender" className="block text-sm font-medium leading-6 text-gray-900">
+                Gender
               </label>
               <div className="mt-2">
                 <select
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                  id="gender"
+                  name="gender"
+                  type="text"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
+                >
+                    <option>Select Your Gender</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                </select>
+
               </div>
             </div>
 
@@ -70,10 +74,9 @@ function Registration() {
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                  id="mobileNo"
+                  name="mobileNo"
+                  type="mobile"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -86,10 +89,9 @@ function Registration() {
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
+                  id="nic"
+                  name="nic"
+                  type="nic"
                   required
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -101,7 +103,7 @@ function Registration() {
                 Address
               </label>
               <div className="mt-2">
-                <input
+                <textarea
                   id="email"
                   name="email"
                   type="email"
