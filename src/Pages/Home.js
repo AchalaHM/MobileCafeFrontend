@@ -2,10 +2,11 @@ import { useState } from 'react'
 // import { Dialog, DialogPanel } from '@headlessui/react'
 // import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Login from './Login'
+import MobilePhones from './MobilePhones'
 
 const navigation = [
   { name: 'Home', href: '#' },
-  { name: 'Mobile Phones', href: '#' },
+  { name: 'Mobile Phones', href: 'MobilePhones' },
   { name: 'Mobile Accesories', href: '#' },
   { name: 'About Us', href: '#' },
 ]
