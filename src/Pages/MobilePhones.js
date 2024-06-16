@@ -1,4 +1,5 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState , useEffect} from 'react'
+import axios from 'axios'
 import { Dialog, DialogPanel, Radio, RadioGroup, Transition, TransitionChild } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { StarIcon } from '@heroicons/react/20/solid'
@@ -7,88 +8,13 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
   }
   
-
-const products = [
-    {
-      id: 1,
-      name: 'Basic Tee',
-      href: '#',
-      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-      imageAlt: "Front of men's Basic Tee in black.",
-      price: '$35',
-      color: 'Black',
-    },
-    {
-        id: 2,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-      },
-      {
-        id: 3,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-      },
-      {
-        id: 4,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-      },
-      {
-        id: 5,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-      },
-      {
-        id: 6,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-      },
-      {
-        id: 7,
-        name: 'Basic Tee',
-        href: '#',
-        imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-        imageAlt: "Front of men's Basic Tee in black.",
-        price: '$35',
-        color: 'Black',
-      },
-      {
-      id: 8,
-      name: 'Basic Tee',
-      href: '#',
-      imageSrc: 'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-      imageAlt: "Front of men's Basic Tee in black.",
-      price: '$35',
-      color: 'Black',
-    },
-  ]
-
 function MobilePhones() {
 
     const [open, setOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [selectedColor, setSelectedColor] = useState(null);
     const [selectedSize, setSelectedSize] = useState(null);
+    const [mobileCategory , setMobileCategory] = useState(null)
   
 
     const openPopup = (product) => {
@@ -101,6 +27,30 @@ function MobilePhones() {
         setSelectedProduct(null);
       };
     
+      useEffect(() => {
+        // Fetch mobile categories from the backend
+        axios.get('http://localhost:8080/Cafe/getAllMobiles')
+          .then(response => {
+            // setMobileCategory(response.data);
+            console.log(response.data);
+            const { responseObject } = response.data;
+            // console.log( responseObject)
+            setMobileCategory(responseObject)
+            console.log(responseObject)
+            console.log("::::::::::")
+          })
+          .catch(error => {
+            console.error('There was an error fetching the mobile categories!', error);
+          });
+      }, []);
+
+      console.log(mobileCategory)
+
+      // const mobiles = mobileCategory.map(mobile=> ({
+      //   mobileId: mobile.id,
+      //   brandName : mobile.brandName
+      // }));
+      
 
   return (
     <div className="bg-white">
@@ -108,14 +58,14 @@ function MobilePhones() {
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">Customers also purchased</h2>
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {products.map((product) => (
+          {mobileCategory?.map((product) => (
             <div key={product.id} className="group relative" onClick={() => openPopup(product)}>
             <div
                 className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80"
                 onClick={() => openPopup(product)}
               >
                 <img
-                  src={product.imageSrc}
+                  src={`data:image/jpeg;base64,${product.image}`}
                   alt={product.imageAlt}
                   className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                 />
@@ -125,12 +75,12 @@ function MobilePhones() {
                   <h3 className="text-sm text-gray-700">
                     <a href={product.href} onClick={(e) => e.preventDefault()}>
                       <span aria-hidden="true" className="absolute inset-0" />
-                      {product.name}
+                      {product.brandName + " " + product.model}
                     </a>
                   </h3>
-                  <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                  <p className="mt-1 text-sm text-gray-500">{product.storage} GB</p>
                 </div>
-                <p className="text-sm font-medium text-gray-900">{product.price}</p>
+                <p className="text-sm font-medium text-gray-900">Rs.{product.price}.00</p>
               </div>
             </div>
           ))}
@@ -177,17 +127,17 @@ function MobilePhones() {
 
                   <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-8 sm:grid-cols-12 lg:gap-x-8">
                     <div className="aspect-h-3 aspect-w-2 overflow-hidden rounded-lg bg-gray-100 sm:col-span-4 lg:col-span-5">
-                      <img src={selectedProduct.imageSrc} alt={selectedProduct.imageAlt} className="object-cover object-center" />
+                      <img src={`data:image/jpeg;base64,${selectedProduct.image}`} alt={selectedProduct.imageAlt} className="object-cover object-center" />
                     </div>
                     <div className="sm:col-span-8 lg:col-span-7">
-                      <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">{selectedProduct.name}</h2>
+                      <h2 className="text-2xl font-bold text-gray-900 sm:pr-12">{selectedProduct.brandName + " " + selectedProduct.model}</h2>
 
                       <section aria-labelledby="information-heading" className="mt-2">
                         <h3 id="information-heading" className="sr-only">
                           Product information
                         </h3>
 
-                        <p className="text-2xl text-gray-900">{selectedProduct.price}</p>
+                        <p className="text-2xl text-gray-900">Rs. {selectedProduct.price}.00</p>
 
                         {/* Reviews */}
                         <div className="mt-6">
